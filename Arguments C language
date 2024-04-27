@@ -1,0 +1,64 @@
+/**
+ * @file File handling in C with the getc and EOF functions
+ * @brief use of the c functions
+ * @author Ssembajjwe
+ * @date 11/04/2024
+ * */
+#define _CRT_SECURE_NO_WARNINGS
+// By defining _CRT_SECURE_NO_WARNINGS, you're instructing the compiler to suppress the warnings that arise from
+// using the functions with the 's'appendix for example (strcpy_s) on them in a microsoft compiler.
+#include <stdio.h>
+#include <stdlib.h>
+
+// the file easily,otherwise it will not return 0,it will say an error of  unknown escape sequence noticed
+//And also one has to  make sure that the file name matches the stored one you are referencing to
+// otherwise it will return error value on checking for NULL
+
+int main(int argc, char *argv[]) {
+    //Testing for the number of arguments present before we continue
+    // We put the condition to 2 because always the argc should be able to recognise the program name which is argv[0]
+    // and the file name which is argv[1] totaling to 2 hence the condition
+    //in the if condition one can use the != sign which means that the person is interested in making sure that
+    // both the program name and file name are considered  ,so they put the condition to if (argc != 2){} ,
+    // otherwise this if used below caters for  the  same condition that the program and file name are present
+    // then it executes the of the code.
+    if  ( argc < 2) {
+        printf("There is a problem with required  arguments");
+        return -1;
+    }
+
+
+    //first declaring the new pointer variable with FILE data type so that
+    // it helps us store results from the fopen function
+    FILE *name_matrix;
+    //The fopen is a function for opening files and
+    // the assigned mode tells what the file is being opened for e.g for reading in this case
+    //remember that the file name is assigned to argv[1] ,that's the reason for using it as argv[1] here
+
+    name_matrix = fopen(argv[1],"r");
+    //This statement always must be part of our code so that  we know that the file we are working with is really valid
+    if (name_matrix == NULL) {
+        printf("This file has a problem %s\n", argv[1]);
+        //this is what compiler does incase it finds out that the statement is true,so it prints as requested  and then
+        // returns 1 to end compilation
+        return 1;
+    }
+    //  Always store the return value in an int variable(int ch =0;), not a char variable.(char ch =0;).
+    // Testing a char variable against EOF in the while loop below "may" give the wrong result.
+    //The "may" is in quotes because if you forget to make the return value a character,you still get the results
+    // however good practice is to use the integer datatype to avoid working on chances
+    char ch=0;
+    //One of the most common uses of fgetc, getc, and getchar is to read characters from a file,
+    // This  while loop  is exactly made for this  purpose.
+    while((ch = getc(name_matrix)) != EOF) {
+        printf("%c",ch);
+    //this will put a space after every character in the array
+        printf(" ");
+    }
+    //This is the return value of the main function.
+    return 0;
+    //Note that reading a matrix from a file when its dimensions are unknown at compile time is a problem in C however,
+    // The challenge lies in not knowing how much memory to allocate for the matrix beforehand.
+    // , this problem can be tackled by dynamically allocating memory based on the file's contents using
+    // the malloc function as part of your code and freeing the allocated memory later
+}
